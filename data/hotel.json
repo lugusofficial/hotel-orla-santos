@@ -1,0 +1,819 @@
+{
+ "nome": "Sua Marca",
+ "cidade": "Santos",
+ "lat": -23.968,
+ "lng": -46.352,
+ "rotacaoGraus": -8,
+ "quartosPorFachada": 3,
+ "dimensoes": {
+  "larguraPorQuarto": 4.3,
+  "profundidade": 14.0,
+  "peDireito": 3.0,
+  "terreo": 4.6
+ },
+ "tipos": {
+  "duplo": {
+   "nome": "Quarto Duplo",
+   "base": 220,
+   "pagina": "quarto-duplo.html",
+   "hosp": 3,
+   "area": 16
+  },
+  "frentemar": {
+   "nome": "Quarto Frente Mar",
+   "base": 320,
+   "pagina": "quarto-frente-mar.html",
+   "hosp": 3,
+   "area": 18
+  },
+  "quadruplo": {
+   "nome": "Quarto Quádruplo",
+   "base": 380,
+   "pagina": "quarto-quadruplo.html",
+   "hosp": 4,
+   "area": 22
+  }
+ },
+ "andares": [
+  {
+   "numero": 1,
+   "quartos": [
+    {
+     "numero": 101,
+     "tipo": "frentemar",
+     "fachada": "S",
+     "posicaoNaFachada": 0,
+     "precoBase": 320,
+     "acessivel": true,
+     "vista": "mar",
+     "status": "disponivel"
+    },
+    {
+     "numero": 102,
+     "tipo": "frentemar",
+     "fachada": "S",
+     "posicaoNaFachada": 1,
+     "precoBase": 320,
+     "acessivel": true,
+     "vista": "mar",
+     "status": "indisponivel"
+    },
+    {
+     "numero": 103,
+     "tipo": "frentemar",
+     "fachada": "S",
+     "posicaoNaFachada": 2,
+     "precoBase": 320,
+     "acessivel": true,
+     "vista": "mar",
+     "status": "disponivel"
+    },
+    {
+     "numero": 104,
+     "tipo": "duplo",
+     "fachada": "N",
+     "posicaoNaFachada": 0,
+     "precoBase": 180,
+     "acessivel": true,
+     "vista": "cidade",
+     "status": "disponivel"
+    },
+    {
+     "numero": 105,
+     "tipo": "quadruplo",
+     "fachada": "N",
+     "posicaoNaFachada": 1,
+     "precoBase": 340,
+     "acessivel": true,
+     "vista": "cidade",
+     "status": "disponivel"
+    },
+    {
+     "numero": 106,
+     "tipo": "duplo",
+     "fachada": "N",
+     "posicaoNaFachada": 2,
+     "precoBase": 180,
+     "acessivel": true,
+     "vista": "cidade",
+     "status": "disponivel"
+    }
+   ]
+  },
+  {
+   "numero": 2,
+   "quartos": [
+    {
+     "numero": 201,
+     "tipo": "frentemar",
+     "fachada": "S",
+     "posicaoNaFachada": 0,
+     "precoBase": 330,
+     "acessivel": true,
+     "vista": "mar",
+     "status": "disponivel"
+    },
+    {
+     "numero": 202,
+     "tipo": "frentemar",
+     "fachada": "S",
+     "posicaoNaFachada": 1,
+     "precoBase": 330,
+     "acessivel": true,
+     "vista": "mar",
+     "status": "disponivel"
+    },
+    {
+     "numero": 203,
+     "tipo": "frentemar",
+     "fachada": "S",
+     "posicaoNaFachada": 2,
+     "precoBase": 330,
+     "acessivel": true,
+     "vista": "mar",
+     "status": "disponivel"
+    },
+    {
+     "numero": 204,
+     "tipo": "duplo",
+     "fachada": "N",
+     "posicaoNaFachada": 0,
+     "precoBase": 185,
+     "acessivel": true,
+     "vista": "cidade",
+     "status": "disponivel"
+    },
+    {
+     "numero": 205,
+     "tipo": "quadruplo",
+     "fachada": "N",
+     "posicaoNaFachada": 1,
+     "precoBase": 345,
+     "acessivel": true,
+     "vista": "cidade",
+     "status": "disponivel"
+    },
+    {
+     "numero": 206,
+     "tipo": "duplo",
+     "fachada": "N",
+     "posicaoNaFachada": 2,
+     "precoBase": 185,
+     "acessivel": true,
+     "vista": "cidade",
+     "status": "disponivel"
+    }
+   ]
+  },
+  {
+   "numero": 3,
+   "quartos": [
+    {
+     "numero": 301,
+     "tipo": "frentemar",
+     "fachada": "S",
+     "posicaoNaFachada": 0,
+     "precoBase": 340,
+     "acessivel": false,
+     "vista": "mar",
+     "status": "disponivel"
+    },
+    {
+     "numero": 302,
+     "tipo": "frentemar",
+     "fachada": "S",
+     "posicaoNaFachada": 1,
+     "precoBase": 340,
+     "acessivel": false,
+     "vista": "mar",
+     "status": "disponivel"
+    },
+    {
+     "numero": 303,
+     "tipo": "frentemar",
+     "fachada": "S",
+     "posicaoNaFachada": 2,
+     "precoBase": 340,
+     "acessivel": false,
+     "vista": "mar",
+     "status": "indisponivel"
+    },
+    {
+     "numero": 304,
+     "tipo": "duplo",
+     "fachada": "N",
+     "posicaoNaFachada": 0,
+     "precoBase": 190,
+     "acessivel": false,
+     "vista": "cidade",
+     "status": "disponivel"
+    },
+    {
+     "numero": 305,
+     "tipo": "quadruplo",
+     "fachada": "N",
+     "posicaoNaFachada": 1,
+     "precoBase": 350,
+     "acessivel": false,
+     "vista": "cidade",
+     "status": "disponivel"
+    },
+    {
+     "numero": 306,
+     "tipo": "duplo",
+     "fachada": "N",
+     "posicaoNaFachada": 2,
+     "precoBase": 190,
+     "acessivel": false,
+     "vista": "cidade",
+     "status": "disponivel"
+    }
+   ]
+  },
+  {
+   "numero": 4,
+   "quartos": [
+    {
+     "numero": 401,
+     "tipo": "frentemar",
+     "fachada": "S",
+     "posicaoNaFachada": 0,
+     "precoBase": 350,
+     "acessivel": false,
+     "vista": "mar",
+     "status": "disponivel"
+    },
+    {
+     "numero": 402,
+     "tipo": "frentemar",
+     "fachada": "S",
+     "posicaoNaFachada": 1,
+     "precoBase": 350,
+     "acessivel": false,
+     "vista": "mar",
+     "status": "disponivel"
+    },
+    {
+     "numero": 403,
+     "tipo": "frentemar",
+     "fachada": "S",
+     "posicaoNaFachada": 2,
+     "precoBase": 350,
+     "acessivel": false,
+     "vista": "mar",
+     "status": "disponivel"
+    },
+    {
+     "numero": 404,
+     "tipo": "duplo",
+     "fachada": "N",
+     "posicaoNaFachada": 0,
+     "precoBase": 195,
+     "acessivel": false,
+     "vista": "cidade",
+     "status": "disponivel"
+    },
+    {
+     "numero": 405,
+     "tipo": "quadruplo",
+     "fachada": "N",
+     "posicaoNaFachada": 1,
+     "precoBase": 355,
+     "acessivel": false,
+     "vista": "cidade",
+     "status": "disponivel"
+    },
+    {
+     "numero": 406,
+     "tipo": "duplo",
+     "fachada": "N",
+     "posicaoNaFachada": 2,
+     "precoBase": 195,
+     "acessivel": false,
+     "vista": "cidade",
+     "status": "indisponivel"
+    }
+   ]
+  },
+  {
+   "numero": 5,
+   "quartos": [
+    {
+     "numero": 501,
+     "tipo": "frentemar",
+     "fachada": "S",
+     "posicaoNaFachada": 0,
+     "precoBase": 360,
+     "acessivel": false,
+     "vista": "mar",
+     "status": "disponivel"
+    },
+    {
+     "numero": 502,
+     "tipo": "frentemar",
+     "fachada": "S",
+     "posicaoNaFachada": 1,
+     "precoBase": 360,
+     "acessivel": false,
+     "vista": "mar",
+     "status": "disponivel"
+    },
+    {
+     "numero": 503,
+     "tipo": "frentemar",
+     "fachada": "S",
+     "posicaoNaFachada": 2,
+     "precoBase": 360,
+     "acessivel": false,
+     "vista": "mar",
+     "status": "indisponivel"
+    },
+    {
+     "numero": 504,
+     "tipo": "duplo",
+     "fachada": "N",
+     "posicaoNaFachada": 0,
+     "precoBase": 200,
+     "acessivel": false,
+     "vista": "cidade",
+     "status": "disponivel"
+    },
+    {
+     "numero": 505,
+     "tipo": "quadruplo",
+     "fachada": "N",
+     "posicaoNaFachada": 1,
+     "precoBase": 360,
+     "acessivel": false,
+     "vista": "cidade",
+     "status": "disponivel"
+    },
+    {
+     "numero": 506,
+     "tipo": "duplo",
+     "fachada": "N",
+     "posicaoNaFachada": 2,
+     "precoBase": 200,
+     "acessivel": false,
+     "vista": "cidade",
+     "status": "disponivel"
+    }
+   ]
+  },
+  {
+   "numero": 6,
+   "quartos": [
+    {
+     "numero": 601,
+     "tipo": "frentemar",
+     "fachada": "S",
+     "posicaoNaFachada": 0,
+     "precoBase": 370,
+     "acessivel": false,
+     "vista": "mar",
+     "status": "disponivel"
+    },
+    {
+     "numero": 602,
+     "tipo": "frentemar",
+     "fachada": "S",
+     "posicaoNaFachada": 1,
+     "precoBase": 370,
+     "acessivel": false,
+     "vista": "mar",
+     "status": "disponivel"
+    },
+    {
+     "numero": 603,
+     "tipo": "frentemar",
+     "fachada": "S",
+     "posicaoNaFachada": 2,
+     "precoBase": 370,
+     "acessivel": false,
+     "vista": "mar",
+     "status": "indisponivel"
+    },
+    {
+     "numero": 604,
+     "tipo": "duplo",
+     "fachada": "N",
+     "posicaoNaFachada": 0,
+     "precoBase": 205,
+     "acessivel": false,
+     "vista": "cidade",
+     "status": "disponivel"
+    },
+    {
+     "numero": 605,
+     "tipo": "quadruplo",
+     "fachada": "N",
+     "posicaoNaFachada": 1,
+     "precoBase": 365,
+     "acessivel": false,
+     "vista": "cidade",
+     "status": "disponivel"
+    },
+    {
+     "numero": 606,
+     "tipo": "duplo",
+     "fachada": "N",
+     "posicaoNaFachada": 2,
+     "precoBase": 205,
+     "acessivel": false,
+     "vista": "cidade",
+     "status": "indisponivel"
+    }
+   ]
+  },
+  {
+   "numero": 7,
+   "quartos": [
+    {
+     "numero": 701,
+     "tipo": "frentemar",
+     "fachada": "S",
+     "posicaoNaFachada": 0,
+     "precoBase": 380,
+     "acessivel": false,
+     "vista": "mar",
+     "status": "disponivel"
+    },
+    {
+     "numero": 702,
+     "tipo": "frentemar",
+     "fachada": "S",
+     "posicaoNaFachada": 1,
+     "precoBase": 380,
+     "acessivel": false,
+     "vista": "mar",
+     "status": "indisponivel"
+    },
+    {
+     "numero": 703,
+     "tipo": "frentemar",
+     "fachada": "S",
+     "posicaoNaFachada": 2,
+     "precoBase": 380,
+     "acessivel": false,
+     "vista": "mar",
+     "status": "disponivel"
+    },
+    {
+     "numero": 704,
+     "tipo": "duplo",
+     "fachada": "N",
+     "posicaoNaFachada": 0,
+     "precoBase": 210,
+     "acessivel": false,
+     "vista": "cidade",
+     "status": "disponivel"
+    },
+    {
+     "numero": 705,
+     "tipo": "quadruplo",
+     "fachada": "N",
+     "posicaoNaFachada": 1,
+     "precoBase": 370,
+     "acessivel": false,
+     "vista": "cidade",
+     "status": "disponivel"
+    },
+    {
+     "numero": 706,
+     "tipo": "duplo",
+     "fachada": "N",
+     "posicaoNaFachada": 2,
+     "precoBase": 210,
+     "acessivel": false,
+     "vista": "cidade",
+     "status": "indisponivel"
+    }
+   ]
+  },
+  {
+   "numero": 8,
+   "quartos": [
+    {
+     "numero": 801,
+     "tipo": "frentemar",
+     "fachada": "S",
+     "posicaoNaFachada": 0,
+     "precoBase": 390,
+     "acessivel": false,
+     "vista": "mar",
+     "status": "disponivel"
+    },
+    {
+     "numero": 802,
+     "tipo": "frentemar",
+     "fachada": "S",
+     "posicaoNaFachada": 1,
+     "precoBase": 390,
+     "acessivel": false,
+     "vista": "mar",
+     "status": "disponivel"
+    },
+    {
+     "numero": 803,
+     "tipo": "frentemar",
+     "fachada": "S",
+     "posicaoNaFachada": 2,
+     "precoBase": 390,
+     "acessivel": false,
+     "vista": "mar",
+     "status": "disponivel"
+    },
+    {
+     "numero": 804,
+     "tipo": "duplo",
+     "fachada": "N",
+     "posicaoNaFachada": 0,
+     "precoBase": 215,
+     "acessivel": false,
+     "vista": "cidade",
+     "status": "disponivel"
+    },
+    {
+     "numero": 805,
+     "tipo": "quadruplo",
+     "fachada": "N",
+     "posicaoNaFachada": 1,
+     "precoBase": 375,
+     "acessivel": false,
+     "vista": "cidade",
+     "status": "indisponivel"
+    },
+    {
+     "numero": 806,
+     "tipo": "duplo",
+     "fachada": "N",
+     "posicaoNaFachada": 2,
+     "precoBase": 215,
+     "acessivel": false,
+     "vista": "cidade",
+     "status": "disponivel"
+    }
+   ]
+  },
+  {
+   "numero": 9,
+   "quartos": [
+    {
+     "numero": 901,
+     "tipo": "frentemar",
+     "fachada": "S",
+     "posicaoNaFachada": 0,
+     "precoBase": 400,
+     "acessivel": false,
+     "vista": "mar",
+     "status": "indisponivel"
+    },
+    {
+     "numero": 902,
+     "tipo": "frentemar",
+     "fachada": "S",
+     "posicaoNaFachada": 1,
+     "precoBase": 400,
+     "acessivel": false,
+     "vista": "mar",
+     "status": "disponivel"
+    },
+    {
+     "numero": 903,
+     "tipo": "frentemar",
+     "fachada": "S",
+     "posicaoNaFachada": 2,
+     "precoBase": 400,
+     "acessivel": false,
+     "vista": "mar",
+     "status": "disponivel"
+    },
+    {
+     "numero": 904,
+     "tipo": "duplo",
+     "fachada": "N",
+     "posicaoNaFachada": 0,
+     "precoBase": 220,
+     "acessivel": false,
+     "vista": "cidade",
+     "status": "disponivel"
+    },
+    {
+     "numero": 905,
+     "tipo": "quadruplo",
+     "fachada": "N",
+     "posicaoNaFachada": 1,
+     "precoBase": 380,
+     "acessivel": false,
+     "vista": "cidade",
+     "status": "disponivel"
+    },
+    {
+     "numero": 906,
+     "tipo": "duplo",
+     "fachada": "N",
+     "posicaoNaFachada": 2,
+     "precoBase": 220,
+     "acessivel": false,
+     "vista": "cidade",
+     "status": "disponivel"
+    }
+   ]
+  },
+  {
+   "numero": 10,
+   "quartos": [
+    {
+     "numero": 1001,
+     "tipo": "frentemar",
+     "fachada": "S",
+     "posicaoNaFachada": 0,
+     "precoBase": 410,
+     "acessivel": false,
+     "vista": "mar",
+     "status": "disponivel"
+    },
+    {
+     "numero": 1002,
+     "tipo": "frentemar",
+     "fachada": "S",
+     "posicaoNaFachada": 1,
+     "precoBase": 410,
+     "acessivel": false,
+     "vista": "mar",
+     "status": "disponivel"
+    },
+    {
+     "numero": 1003,
+     "tipo": "frentemar",
+     "fachada": "S",
+     "posicaoNaFachada": 2,
+     "precoBase": 410,
+     "acessivel": false,
+     "vista": "mar",
+     "status": "disponivel"
+    },
+    {
+     "numero": 1004,
+     "tipo": "duplo",
+     "fachada": "N",
+     "posicaoNaFachada": 0,
+     "precoBase": 225,
+     "acessivel": false,
+     "vista": "cidade",
+     "status": "disponivel"
+    },
+    {
+     "numero": 1005,
+     "tipo": "quadruplo",
+     "fachada": "N",
+     "posicaoNaFachada": 1,
+     "precoBase": 385,
+     "acessivel": false,
+     "vista": "cidade",
+     "status": "disponivel"
+    },
+    {
+     "numero": 1006,
+     "tipo": "duplo",
+     "fachada": "N",
+     "posicaoNaFachada": 2,
+     "precoBase": 225,
+     "acessivel": false,
+     "vista": "cidade",
+     "status": "disponivel"
+    }
+   ]
+  },
+  {
+   "numero": 11,
+   "quartos": [
+    {
+     "numero": 1101,
+     "tipo": "frentemar",
+     "fachada": "S",
+     "posicaoNaFachada": 0,
+     "precoBase": 420,
+     "acessivel": false,
+     "vista": "mar",
+     "status": "disponivel"
+    },
+    {
+     "numero": 1102,
+     "tipo": "frentemar",
+     "fachada": "S",
+     "posicaoNaFachada": 1,
+     "precoBase": 420,
+     "acessivel": false,
+     "vista": "mar",
+     "status": "disponivel"
+    },
+    {
+     "numero": 1103,
+     "tipo": "frentemar",
+     "fachada": "S",
+     "posicaoNaFachada": 2,
+     "precoBase": 420,
+     "acessivel": false,
+     "vista": "mar",
+     "status": "disponivel"
+    },
+    {
+     "numero": 1104,
+     "tipo": "duplo",
+     "fachada": "N",
+     "posicaoNaFachada": 0,
+     "precoBase": 230,
+     "acessivel": false,
+     "vista": "cidade",
+     "status": "disponivel"
+    },
+    {
+     "numero": 1105,
+     "tipo": "quadruplo",
+     "fachada": "N",
+     "posicaoNaFachada": 1,
+     "precoBase": 390,
+     "acessivel": false,
+     "vista": "cidade",
+     "status": "disponivel"
+    },
+    {
+     "numero": 1106,
+     "tipo": "duplo",
+     "fachada": "N",
+     "posicaoNaFachada": 2,
+     "precoBase": 230,
+     "acessivel": false,
+     "vista": "cidade",
+     "status": "disponivel"
+    }
+   ]
+  },
+  {
+   "numero": 12,
+   "quartos": [
+    {
+     "numero": 1201,
+     "tipo": "frentemar",
+     "fachada": "S",
+     "posicaoNaFachada": 0,
+     "precoBase": 430,
+     "acessivel": false,
+     "vista": "mar",
+     "status": "indisponivel"
+    },
+    {
+     "numero": 1202,
+     "tipo": "frentemar",
+     "fachada": "S",
+     "posicaoNaFachada": 1,
+     "precoBase": 430,
+     "acessivel": false,
+     "vista": "mar",
+     "status": "disponivel"
+    },
+    {
+     "numero": 1203,
+     "tipo": "frentemar",
+     "fachada": "S",
+     "posicaoNaFachada": 2,
+     "precoBase": 430,
+     "acessivel": false,
+     "vista": "mar",
+     "status": "disponivel"
+    },
+    {
+     "numero": 1204,
+     "tipo": "duplo",
+     "fachada": "N",
+     "posicaoNaFachada": 0,
+     "precoBase": 235,
+     "acessivel": false,
+     "vista": "cidade",
+     "status": "disponivel"
+    },
+    {
+     "numero": 1205,
+     "tipo": "quadruplo",
+     "fachada": "N",
+     "posicaoNaFachada": 1,
+     "precoBase": 395,
+     "acessivel": false,
+     "vista": "cidade",
+     "status": "disponivel"
+    },
+    {
+     "numero": 1206,
+     "tipo": "duplo",
+     "fachada": "N",
+     "posicaoNaFachada": 2,
+     "precoBase": 235,
+     "acessivel": false,
+     "vista": "cidade",
+     "status": "disponivel"
+    }
+   ]
+  }
+ ]
+}

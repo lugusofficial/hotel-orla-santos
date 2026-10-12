@@ -1,0 +1,703 @@
+/* Section styles for this site. Base rules and tokens live in base.css and tokens.css: use the custom properties, never raw values. */
+/* Estilo sun bleached: areia clara, um acento dourado, cantos bem redondos. Sem cartoes com sombra.  */
+
+/* Reveal de rolagem. A classe no <html> vem do js/app.js, entao sem script tudo aparece. */
+.js-reveal [data-reveal] { opacity: 0; transform: translateY(16px); transition: opacity 700ms ease, transform 700ms ease; }
+.js-reveal [data-reveal].is-visible { opacity: 1; transform: none; }
+
+/* Cabecalho: pagina atual marcada */
+.site-nav a[aria-current="page"] { text-decoration: underline; text-underline-offset: 0.3em; }
+
+/* Migalhas */
+.crumbs { padding-block: var(--space-4); }
+.crumbs ol { width: min(100% - 2 * var(--gutter), var(--container)); margin-inline: auto; display: flex; flex-wrap: wrap; gap: var(--space-2); font-size: var(--step--1); color: var(--color-muted); }
+.crumbs li + li::before { content: "/"; margin-right: var(--space-2); color: var(--color-rule); }
+.crumbs a { text-decoration: none; }
+.crumbs a:hover { text-decoration: underline; }
+
+/* Cena do predio: ocupa a secao inteira e e a imagem principal do site */
+.cena {
+  position: relative;
+  height: clamp(28rem, 82vh, 48rem);
+  overflow: hidden;
+  background: #0d1b22;
+  /* Sobe por tras do cabecalho para ele flutuar sobre o ceu. Padrao 0px, entao
+     sem JavaScript a cena fica no lugar normal e o cabecalho continua solido. */
+  margin-top: calc(-1 * var(--altura-header, 0px));
+}
+.cena__texto { padding-top: var(--altura-header, 0px); }
+.cena__canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: pan-y; user-select: none; }
+.cena__veu {
+  position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(100deg, rgba(13,27,34,0.88) 0%, rgba(13,27,34,0.62) 30%, rgba(13,27,34,0.12) 52%, rgba(13,27,34,0) 66%);
+}
+.cena__texto {
+  position: absolute; inset: 0; display: grid; align-content: center;
+  pointer-events: none; color: var(--color-bg);
+  /* Espaco reservado para a fileira de chips, que e posicionada por cima:
+     sem isso o texto centralizado encosta neles em tela baixa. */
+  padding-bottom: 6rem;
+}
+.cena__texto .label { color: #e3c98a; }
+.cena__texto h1 { max-width: 13ch; color: var(--color-bg); }
+.cena__texto .lead { max-width: 34ch; color: var(--color-rule); }
+.cena__texto .container { max-width: 64rem; }
+.cena__aviso {
+  position: absolute; left: var(--gutter); bottom: var(--space-4);
+  max-width: 44ch; font-size: var(--step--1); color: var(--color-rule);
+}
+
+/* A ficha sai de dentro da janela escolhida */
+.cena .ficha {
+  position: absolute;
+  width: min(19rem, calc(100% - 2 * var(--gutter)));
+  z-index: 4;
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+}
+.cena .ficha::after {
+  content: ""; position: absolute; left: -10px; top: 50%;
+  width: 10px; height: 2px; background: var(--color-accent);
+}
+
+/* Seletor de tipo dentro da cena: e o controle do predio, nao uma lista de
+   quartos. A lista de quartos sao os cartoes mais abaixo. Fica visivel tambem
+   no modo quarto, para trocar de tipo sem voltar a visao geral. */
+.tipos {
+  position: absolute; z-index: 3;
+  left: 0; right: 0; bottom: var(--space-5);
+}
+.tipos ul {
+  width: min(100% - 2 * var(--gutter), 64rem);
+  margin-inline: auto;
+  display: flex; flex-wrap: wrap; gap: var(--space-2);
+  list-style: none; padding: 0;
+}
+.tipos li { max-width: none; }
+.tipos__chip {
+  display: flex; align-items: center;
+  min-height: 2.75rem; padding: 0 var(--space-4);
+  border: 1px solid rgba(245, 240, 230, 0.3);
+  border-radius: 999px;
+  background: rgba(13, 27, 34, 0.45);
+  color: #f5f0e6;
+  font-size: var(--step--1);
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  transition: border-color 220ms ease, color 220ms ease, background 220ms ease;
+}
+.tipos__chip:hover, .tipos__chip:focus-visible {
+  border-color: #e3c98a; color: #e3c98a;
+}
+.tipos__chip.is-active {
+  border-color: #e3c98a; color: #0d1b22; background: #e3c98a;
+}
+
+/* Cartao que esta comandando o predio, quando os dois estao na tela */
+.rooms__item:has(.is-active) { border-color: var(--color-accent); }
+
+/* Estados da cena. O atributo data-modo e escrito por js/predio-init.js:
+   geral (predio inteiro) e quarto (andares separados). */
+.cena__texto, .cena__veu { transition: opacity 400ms ease; }
+.cena[data-modo="quarto"] .cena__texto { opacity: 0; }
+
+/* Acoes da ficha: trocar de andar e voltar ao predio */
+.ficha__acoes { margin: 0; display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); }
+.ficha__acoes .btn { font-size: var(--step--1); }
+.ficha__andares { display: grid; gap: var(--space-2); }
+.ficha__andares > div { display: flex; flex-wrap: wrap; gap: 0.25rem; }
+.ficha__rotulo {
+  font-size: var(--step--1); letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--color-muted);
+}
+.ficha__andares button {
+  /* 2rem de lado: acima do minimo de 24 px do criterio 2.5.8 da WCAG 2.2 */
+  width: 2rem; height: 2rem; padding: 0;
+  font: inherit; font-size: var(--step--1); line-height: 1;
+  color: var(--color-text); background: var(--color-surface);
+  border: 0; border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: color 180ms ease, background 180ms ease;
+}
+.ficha__andares button:hover { color: var(--color-accent); }
+.ficha__andares button[aria-current="true"] {
+  background: var(--color-accent); color: var(--color-bg);
+}
+
+@media (max-width: 55.99em) {
+  /* A cena cresce: abaixo deste ponto o texto deixa de ser centralizado e
+     passa a dividir a altura com o titulo quebrado, o predio e os chips. */
+  .cena { height: clamp(32rem, 84svh, 44rem); }
+  /* Encostada na base e ainda posicionada: o canvas e absoluto e pinta por cima
+     de qualquer filho fora de posicionamento, entao com position static a ficha
+     sumia atras dele. Em baixo ela tambem deixa o predio a vista. */
+  .cena .ficha {
+    position: absolute; inset: auto var(--gutter) var(--space-3);
+    width: auto; transform: none; margin: 0;
+    padding: var(--space-3); gap: var(--space-2);
+  }
+  .cena .ficha::after { display: none; }
+  .cena .ficha__tipo { font-size: var(--step-1); }
+  .cena .ficha__dados { gap: var(--space-2); }
+  /* Sem a altura do cabecalho o texto comeca atras dele: a cena sobe por tras
+     do cabecalho e o padding da base e o que reserva a fileira de chips. */
+  .cena__texto {
+    align-content: start;
+    padding-top: calc(var(--altura-header, 0px) + var(--space-5));
+    padding-bottom: 7.5rem;
+  }
+  .cena__texto h1 { font-size: var(--step-3); max-width: 16ch; }
+  .cena__texto .lead { max-width: 30ch; }
+  /* O veu padrao escurece a esquerda, onde o texto fica no formato paisagem.
+     Aqui o texto fica em cima e o predio embaixo, entao o veu vira. */
+  .cena__veu {
+    background: linear-gradient(180deg, rgba(13,27,34,0.94) 0%, rgba(13,27,34,0.88) 46%,
+      rgba(13,27,34,0.24) 66%, rgba(13,27,34,0) 80%);
+  }
+  .tipos__chip { padding: 0 var(--space-3); }
+}
+
+/* Listagem de quartos: cartao delimitado de verdade, com superficie propria,
+   contorno e foto sangrando no topo. As linhas do grid sao fixas e o resumo
+   recebe 1fr, entao preco e fatos encostam na base e os cartoes alinham. */
+.rooms { display: grid; gap: var(--space-5); align-items: stretch; }
+.rooms__item {
+  max-width: none;
+  display: grid;
+  grid-template-rows: auto 1fr auto auto;
+  gap: 0;
+  background: var(--color-bg);
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  padding-bottom: var(--space-4);
+  position: relative;
+  cursor: pointer;
+  transition: border-color 220ms ease, transform 220ms ease;
+}
+/* O link cobre o cartao inteiro: clicar em qualquer lugar abre o quarto e o
+   ponteiro vira maozinha, em vez do cursor de selecao de texto. */
+.rooms__link::after { content: ""; position: absolute; inset: 0; }
+.rooms__item :where(h2, h3, p) { user-select: none; }
+.rooms__item:hover { border-color: var(--color-accent); transform: translateY(-2px); }
+.rooms__link { text-decoration: none; display: grid; gap: 0; }
+.rooms__link img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  margin-bottom: var(--space-4);
+  transition: opacity 220ms ease;
+}
+.rooms__item:hover .rooms__link img { opacity: 0.92; }
+.rooms__link h2, .rooms__link h3 {
+  font-size: var(--step-1);
+  padding-inline: var(--space-4);
+  margin-bottom: var(--space-2);
+}
+.rooms__item:hover .rooms__link h2 { color: var(--color-accent); }
+.rooms__resumo {
+  padding-inline: var(--space-4);
+  margin-bottom: var(--space-4);
+  max-width: 34ch;
+}
+.rooms__fatos {
+  margin: 0 0 var(--space-3);
+  padding-inline: var(--space-4);
+  font-size: var(--step--1);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+.rooms__fatos span { color: var(--color-rule); }
+.rooms__preco {
+  margin: 0 var(--space-4);
+  padding-top: var(--space-3);
+  display: grid;
+  gap: 2px;
+}
+.rooms__desde {
+  font-size: var(--step--1);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+.rooms__valor { display: flex; align-items: baseline; gap: 0.35em; }
+.rooms__valor span { font-size: var(--step--1); color: var(--color-muted); }
+.rooms__valor strong {
+  font-family: var(--font-display);
+  font-weight: var(--weight-display);
+  font-size: var(--step-2);
+  /* Cor de texto, nao de acento: o dourado sobre a areia fica em 4,4:1 e o
+     axe reprova a 390 px, onde o valor ainda nao conta como texto grande. */
+  color: var(--color-text);
+  line-height: 1;
+}
+@media (min-width: 40em) { .rooms { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 72em) { .rooms { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-5); } }
+
+/* Fichas tecnicas */
+.specs { display: grid; gap: var(--space-3); }
+.specs div { display: grid; gap: var(--space-1); }
+.specs dt { font-size: var(--step--1); letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-muted); }
+.specs dd { margin: 0; font-family: var(--font-display); font-size: var(--step-1); }
+.specs--inline { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-3); }
+.specs--inline dd { font-size: var(--step-0); }
+.specs--stack dd { font-size: var(--step-0); }
+@media (min-width: 40em) { .specs { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-5); } .specs--stack { grid-template-columns: 1fr; } }
+
+/* Pagina de quarto */
+.room { display: grid; gap: var(--space-7); align-items: start; }
+.room__intro h1 { max-width: 14ch; }
+.room__intro .lead { max-width: 40ch; }
+.fineprint { font-size: var(--step--1); max-width: 46ch; }
+@media (min-width: 64em) { .room { grid-template-columns: 5fr 7fr; gap: var(--space-8); } }
+
+/* Galeria */
+.gal { display: grid; gap: var(--space-4); }
+.gal__viewport { overflow: hidden; border-radius: var(--radius-lg); }
+.gal__track { display: flex; transition: transform 520ms cubic-bezier(0.33, 1, 0.68, 1); }
+.gal__slide { flex: 0 0 100%; min-width: 100%; max-width: none; }
+.gal__slide img { width: 100%; aspect-ratio: 3 / 2; object-fit: cover; display: block; }
+.gal__controls { display: flex; align-items: center; gap: var(--space-4); }
+.gal__arrow {
+  background: var(--color-surface); border: 0; border-radius: var(--radius-pill);
+  min-width: 2.75rem; min-height: 2.75rem;
+  display: inline-flex; align-items: center; justify-content: center;
+  color: var(--color-text); transition: background 200ms ease, color 200ms ease;
+}
+.gal__arrow:hover { background: var(--color-accent); color: var(--color-on-accent); }
+.gal__arrow .icon--prev { transform: rotate(180deg); }
+.gal__dots { display: flex; gap: var(--space-2); margin-inline: auto 0; }
+.gal__dots li { max-width: none; display: flex; }
+.gal__dot {
+  width: 1.5rem; height: 1.5rem; padding: 0;
+  background: none; border: 0;
+  display: grid; place-items: center;
+}
+.gal__dot::before {
+  content: ""; display: block;
+  width: 0.5rem; height: 0.5rem;
+  background: var(--color-rule); border-radius: var(--radius-pill);
+  transition: width 250ms ease, background 250ms ease;
+}
+.gal__dot[aria-current="true"] { width: 2.5rem; }
+.gal__dot[aria-current="true"]::before { background: var(--color-accent); width: 1.5rem; }
+.gal:not(.is-live) .gal__controls { display: none; }
+.gal:not(.is-live) .gal__track { flex-direction: column; gap: var(--space-4); }
+
+/* Maquete 3D */
+/* Tour 360: palco do panorama e a descricao em texto ao lado */
+.tour { display: grid; gap: var(--space-6); align-items: start; }
+.tour__palco { position: relative; display: grid; gap: var(--space-4); }
+.tour__canvas {
+  width: 100%; height: clamp(20rem, 58vw, 36rem); display: block;
+  border-radius: var(--radius-lg); background: var(--color-surface);
+  touch-action: pan-y; user-select: none;
+}
+.tour__capa {
+  position: absolute; inset: 0; display: grid; place-items: center;
+  border-radius: var(--radius-lg); overflow: hidden;
+  height: clamp(20rem, 58vw, 36rem);
+}
+/* Antes de o tour abrir, os controles nao controlam nada: ficam fora da
+   pagina e fora da ordem de foco, em vez de enfileirados sem funcao. */
+.tour:not([data-pronto="true"]) .tour__controles,
+.tour:not([data-pronto="true"]) .tour__status { display: none; }
+.tour__capa img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+/* O veu escurece a foto para o botao se destacar, e nada mais: sem isto ele
+   fica por cima do botao e come o clique, que e o que acontecia. */
+.tour__capa::after {
+  content: ""; position: absolute; inset: 0;
+  background: rgba(13, 27, 34, 0.42);
+  pointer-events: none;
+}
+.tour__start { position: relative; z-index: 1; }
+.tour[data-pronto="true"] .tour__capa { display: none; }
+.tour__controles { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+/* 2.75rem de alvo: acima do minimo de 24 px do criterio 2.5.8 da WCAG 2.2 */
+/* Pastilha escura, a mesma linguagem do botao do menu. Antes era preenchida
+   com a cor de superficie, que e exatamente o fundo desta secao: o botao
+   sumia e sobrava a setinha solta. */
+.tour__btn {
+  min-width: 2.75rem; min-height: 2.75rem; padding: 0 var(--space-3);
+  font: inherit; font-size: var(--step--1); line-height: 1;
+  color: var(--color-bg); background: var(--color-text);
+  border: 0; border-radius: var(--radius-pill);
+  cursor: pointer; transition: background 180ms ease;
+}
+.tour__btn:hover { background: var(--color-accent); }
+.tour__btn--texto { padding-inline: var(--space-4); }
+.tour__status { min-height: 1.5em; font-size: var(--step--1); color: var(--color-muted); margin: 0; }
+.tour__aviso { font-size: var(--step--1); color: var(--color-muted); max-width: 48ch; }
+.tour__lado h3 { font-size: var(--step-1); }
+.tour__lista { display: grid; gap: var(--space-3); }
+.tour__lista li { max-width: 40ch; padding-left: var(--space-4); position: relative; }
+.tour__lista li::before {
+  content: ""; position: absolute; left: 0; top: 0.65em;
+  width: 0.5rem; height: 1px; background: var(--color-accent);
+}
+/* A descricao desce para debaixo do tour em vez de dividir a linha com ele:
+   o panorama ganha a largura inteira do conteudo, que e o que faltava para o
+   quarto caber no olho. Tela cheia nao serve aqui: a 74 graus de campo so um
+   quinto da largura do panorama cobre a tela, e esticar isso numa tela de
+   verdade da a imagem borrada. */
+@media (min-width: 48em) {
+  .tour__lista { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3) var(--space-6); }
+  .tour__lista li { max-width: none; }
+}
+
+/* Comodidades */
+.amen { display: grid; gap: var(--space-3); }
+.amen li {
+  max-width: none;
+  display: grid; grid-template-columns: 1.25rem 1fr;
+  gap: var(--space-3); align-items: start;
+}
+/* Classe propria, nao .icon: o base.css impoe stroke-width 1.75 a .icon e o
+   conjunto foi equilibrado em 1.5. */
+.amen__icone {
+  width: 1.25rem; height: 1.25rem; margin-top: 0.1em;
+  color: var(--color-accent); flex: none;
+}
+@media (min-width: 40em) { .amen { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3) var(--space-6); } }
+
+/* Outros quartos */
+.others { display: grid; gap: var(--space-3); }
+.others li { max-width: none; padding-block: var(--space-2); }
+.others a { text-decoration: none; font-family: var(--font-display); font-size: var(--step-1); }
+.others a:hover { color: var(--color-accent); text-decoration: underline; }
+
+/* Barra fixa de preco no celular */
+.pricebar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 20;
+  display: flex; align-items: center; justify-content: space-between; gap: var(--space-4);
+  padding: var(--space-3) var(--gutter);
+  background: var(--color-bg); border-top: 1px solid var(--color-rule);
+  transform: translateY(110%); transition: transform 280ms ease;
+}
+.pricebar.is-shown { transform: none; }
+.pricebar__price { margin: 0; font-family: var(--font-display); }
+@media (min-width: 64em) { .pricebar { display: none; } }
+
+/* Paginas simples */
+.blocks { display: grid; gap: var(--space-6); }
+.blocks li { max-width: none; }
+.blocks h2 { font-size: var(--step-1); }
+.blocks p { max-width: 50ch; }
+@media (min-width: 48em) { .blocks { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-7); } }
+
+.shot { margin: 0; border-radius: var(--radius-lg); overflow: hidden; }
+.shot img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+
+/* Contato */
+.facts { display: grid; gap: var(--space-5); }
+.facts li { display: grid; gap: var(--space-1); max-width: none; }
+.facts__value { font-family: var(--font-display); font-size: var(--step-1); text-decoration: none; }
+a.facts__value:hover { color: var(--color-accent); text-decoration: underline; }
+@media (min-width: 40em) { .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-6) var(--space-7); } }
+
+/* ============================================================
+   DIVISAO DE CABECALHO E RODAPE, SUPERFICIE E DENSIDADE
+   Tudo por override no site.css: o base.css gerado nao e tocado.
+   ============================================================ */
+
+/* Cabecalho: faixa propria, colada no topo, separada do corpo por regua */
+.site-header {
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-rule);
+  position: sticky;
+  top: 0;
+  z-index: 30;
+}
+.site-header .brand { color: var(--color-text); }
+.site-nav a[aria-current="page"] {
+  color: var(--color-text);
+  text-decoration-thickness: 2px;
+}
+
+/* Rodape: faixa escura, corta o corpo de forma inequivoca */
+.site-footer {
+  background: var(--color-text);
+  color: var(--color-rule);
+  margin-top: var(--space-8);
+  border-top: 4px solid var(--color-accent);
+}
+.site-footer .brand,
+.site-footer a { color: var(--color-bg); }
+.site-footer a:hover { text-decoration: underline; }
+
+/* Superficie alternada entre secoes, para o corpo deixar de ser um bege so */
+main > section:nth-of-type(even) { background: var(--color-surface); }
+
+/* Filete dourado acima do titulo de cada secao */
+.section > .container > h1::before,
+.section > .container > h2::before,
+.section > .container > .stack > h2::before {
+  content: "";
+  display: block;
+  width: 2.5rem;
+  height: 3px;
+  margin-bottom: var(--space-3);
+  background: var(--color-accent);
+}
+
+/* Densidade: encurta o respiro redefinindo o token, sem sobrescrever o padding */
+main { --section-gap: clamp(3rem, 5vw, 5rem); }
+.hero { padding-block: var(--space-6) var(--space-7); }
+.rooms__link img { aspect-ratio: 4 / 3; }
+.shot img { aspect-ratio: 3 / 2; }
+
+/* Ficha do quarto selecionado no predio */
+.ficha {
+  background: var(--color-bg);
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  display: grid;
+  gap: var(--space-3);
+}
+.ficha__num { margin: 0; font-size: var(--step--1); letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-muted); }
+.ficha__tipo { margin: 0; font-family: var(--font-display); font-size: var(--step-2); }
+.ficha__dados { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); margin: 0; }
+.ficha__dados div { display: grid; gap: 2px; }
+.ficha__dados dt { font-size: var(--step--1); color: var(--color-muted); }
+.ficha__dados dd { margin: 0; font-family: var(--font-display); }
+.ficha__estado { margin: 0; font-size: var(--step--1); font-weight: var(--weight-body-medium); }
+.ficha__estado[data-disp="false"] { color: var(--color-muted); }
+
+/* Tooltip da janela */
+.tip {
+  position: absolute;
+  transform: translate(-50%, calc(-100% - 14px));
+  background: var(--color-text);
+  color: var(--color-bg);
+  border-radius: var(--radius-sm);
+  padding: var(--space-2) var(--space-3);
+  display: grid;
+  gap: 2px;
+  font-size: var(--step--1);
+  pointer-events: none;
+  white-space: nowrap;
+  z-index: 5;
+}
+.hero__aviso { font-size: var(--step--1); color: var(--color-muted); max-width: 46ch; }
+
+/* Rodape grudado no fim da tela.
+   Em paginas curtas, como contato, o conteudo acabava antes do fim da janela e
+   o rodape parava no meio, com o fundo do corpo aparecendo embaixo dele. */
+body { min-height: 100svh; display: flex; flex-direction: column; }
+body > main { flex: 1 0 auto; display: flex; flex-direction: column; }
+.site-footer { margin-top: auto; }
+
+/* Pagina curta, de uma secao so, como contato: o conteudo se centraliza no
+   espaco que sobra em vez de grudar no topo. Quando o conteudo e mais alto que
+   a tela nao ha espaco livre, as margens automaticas zeram e nada e cortado. */
+body > main > .section:only-child { margin-block: auto; }
+
+/* Cabecalho sobre a cena: transparente no topo, solido ao rolar.
+
+   So uma propriedade troca, --tinta, e marca e links a seguem. Antes cada
+   elemento tinha a sua declaracao de cor no estado escuro, e elas chegavam
+   fora de sincronia durante a transicao: a marca ja estava clara enquanto os
+   links ainda estavam escuros, sobre um fundo que ainda nao tinha ido embora. */
+.site-header {
+  --tinta: var(--color-text);
+}
+/* Sem transicao, de proposito. Com fundo e texto cruzando em 260 ms existe um
+   instante em que o creme do texto esta sobre o creme meio opaco do fundo e o
+   menu some. A troca e instantanea e acontece exatamente quando a cena sai de
+   tras do cabecalho, que ja e uma quebra visual: ninguem ve um salto, ve o
+   cabecalho assentando sobre o corpo da pagina. */
+.site-header[data-sobre="true"] {
+  --tinta: var(--color-bg);
+  background: transparent;
+  border-bottom-color: transparent;
+}
+.site-header .brand,
+.site-header .site-nav a:not(.btn) { color: var(--tinta); }
+
+/* O botao do menu nao acompanha a troca: e uma pastilha escura fixa, com o
+   mesmo contraste sobre a faixa clara e sobre a cena. Cor que muda num botao
+   pequeno so pisca. */
+.nav-toggle {
+  background: var(--color-text);
+  color: var(--color-bg);
+  padding: var(--space-2) var(--space-3);
+}
+
+/* Seletor de idioma, na barra do cabecalho. Duas letras so: o visitante que
+   chega numa lingua que nao le precisa achar a troca sem antes decifrar o
+   botao do menu, entao ela nao entra no menu sanfonado. */
+.idiomas {
+  margin: 0 0 0 auto;
+  display: flex; align-items: center; gap: 2px;
+  font-size: var(--step--1); letter-spacing: 0.06em;
+}
+.idiomas a, .idiomas__atual {
+  display: flex; align-items: center; justify-content: center;
+  /* 2rem por 2,25rem: acima do minimo de 24 px do criterio 2.5.8 e estreito o
+     bastante para a barra nao quebrar em linha dupla por volta de 900 px, que
+     era o que jogava o seletor por cima do heroi. */
+  min-width: 2rem; min-height: 2.25rem;
+  text-decoration: none; border-radius: var(--radius-pill);
+  color: var(--tinta);
+}
+.idiomas__atual { font-weight: 600; text-decoration: underline; text-underline-offset: 0.3em; }
+.idiomas a:hover { text-decoration: underline; text-underline-offset: 0.3em; }
+@media (min-width: 48em) { .idiomas { margin-left: var(--space-3); order: 3; } }
+
+/* Icone do bloco: mesma familia de traco das comodidades, alinhado com o
+   titulo em vez de empurra-lo para o lado, que e o que acontece quando o
+   icone divide a linha com um titulo de duas linhas. */
+.blocks > li { display: grid; grid-template-columns: 1.5rem 1fr; gap: var(--space-2) var(--space-3); }
+.blocks > li > h2 { margin: 0; align-self: center; }
+.blocks > li > p { grid-column: 2; }
+.blocos__icone {
+  width: 1.5rem; height: 1.5rem; align-self: center;
+  color: var(--color-accent); flex: none;
+}
+
+/* O menu horizontal so a partir de 60em. O base.css abre ele em 48em, e entre
+   768 e 960 px cinco links, o botao de reserva e o seletor de idioma nao cabem
+   na mesma linha: a barra quebrava em duas e o seletor caia sobre o heroi.
+   Abaixo de 60em o menu sanfonado diz a verdade sobre o espaco que existe. */
+@media (max-width: 59.99em) {
+  .nav-toggle { display: inline-flex; }
+  .site-nav { display: none; width: 100%; padding-top: var(--space-4); }
+  .site-nav[data-open="true"] { display: block; }
+  .site-nav ul { flex-direction: column; gap: var(--space-3); margin-bottom: var(--space-4); }
+}
+
+/* Painel de hora e filtros, dentro da cena. Fica recolhido atras de um botao
+   porque a cena e a imagem principal do site e nao pode comecar coberta de
+   formulario; quem quiser procurar, abre. Sem JavaScript ele nem aparece: os
+   controles so fazem sentido com o predio de pe. */
+/* A secao do painel nao ocupa altura: serve so de ancora para ele flutuar
+   sobre o canto de baixo da cena, que termina na linha de cima desta secao.
+   Assim o texto dos controles fica fora do orcamento de palavras do heroi,
+   onde seria contado como prosa. */
+.busca-secao { position: relative; height: 0; }
+.busca {
+  position: absolute; z-index: 4;
+  right: var(--gutter); bottom: var(--space-5);
+  display: flex; flex-direction: column-reverse; align-items: flex-end;
+  gap: var(--space-2);
+  max-width: min(22rem, calc(100% - 2 * var(--gutter)));
+}
+.busca__abrir {
+  min-height: 2.75rem; padding: 0 var(--space-4);
+  font: inherit; font-size: var(--step--1); letter-spacing: 0.04em;
+  color: var(--color-bg); background: rgba(13, 27, 34, 0.78);
+  border: 0; border-radius: var(--radius-pill);
+  cursor: pointer;
+}
+.busca__abrir:hover { color: #e3c98a; }
+.busca__campos {
+  width: min(20rem, 80vw);
+  display: grid; gap: var(--space-3);
+  padding: var(--space-4);
+  background: rgba(13, 27, 34, 0.82);
+  border-radius: var(--radius-md);
+  color: var(--color-bg);
+  max-height: min(26rem, 52svh); overflow-y: auto;
+  /* Folga extra embaixo: a contagem e o ultimo elemento e, com a caixa
+     rolando, ela encostava na borda. */
+  padding-bottom: var(--space-5);
+}
+.busca__linha { margin: 0; display: grid; gap: var(--space-1); font-size: var(--step--1); }
+.busca__linha label { color: var(--color-rule); letter-spacing: 0.04em; }
+.busca__linha--caixa { grid-template-columns: auto 1fr; align-items: center; gap: var(--space-3); }
+.busca__linha input[type="range"] { width: 100%; accent-color: #e3c98a; min-height: 1.75rem; }
+.busca__linha input[type="checkbox"] { width: 1.25rem; height: 1.25rem; accent-color: #e3c98a; }
+.busca__linha select {
+  font: inherit; font-size: var(--step--1); min-height: 2.25rem;
+  padding: 0 var(--space-2); color: var(--color-text);
+  background: var(--color-bg); border: 0; border-radius: var(--radius-sm);
+}
+.busca__linha output { font-family: var(--font-display); font-size: var(--step-0); }
+.busca__conta {
+  margin: var(--space-1) 0 0; text-align: center;
+  font-size: var(--step--1); color: #e3c98a; min-height: 1.4em;
+}
+@media (max-width: 55.99em) {
+  .busca { right: var(--gutter); left: var(--gutter); align-items: flex-start; max-width: none; }
+  .busca__campos { width: 100%; }
+}
+
+/* Tela baixa, largura de desktop: a 600 px de altura o texto do heroi nao cabe
+   centralizado e encavala no cabecalho. Mesma saida do celular: ancora no topo
+   e reserva a faixa dos chips embaixo. */
+@media (min-width: 56em) and (max-height: 44em) {
+  .cena { height: clamp(28rem, 92svh, 48rem); }
+  .cena__texto {
+    align-content: start;
+    padding-top: calc(var(--altura-header, 0px) + var(--space-4));
+    padding-bottom: 6.5rem;
+  }
+  .cena__texto h1 { font-size: var(--step-3); }
+}
+
+/* O predio 3D no celular.
+   No computador ele carrega junto com a pagina e o mouse gira sem conflito.
+   No celular nao dava: o canvas ocupa quase a tela inteira e qualquer gesto
+   dentro dele ou rola a pagina ou gira o predio, nunca os dois, e eu tinha
+   desligado o toque do OrbitControls para nao sequestrar a rolagem, o que na
+   pratica deixou o predio parado. Alem disso a biblioteca pesa mais de um
+   mega, que no celular e o grosso da pagina.
+   Entao no celular o heroi mostra uma foto do predio e um botao; quem toca
+   abre o 3D em tela cheia, onde o gesto e so dele e a rolagem nao existe. */
+.cena__acao { display: none; }
+.cena__fechar { display: none; }
+
+@media (max-width: 55.99em) {
+  .cena { background-image: url("../assets/predio-capa.jpg"); background-size: cover;
+          background-position: center 42%; }
+  .cena__canvas { display: none; }
+  .cena__acao {
+    display: block; position: absolute; z-index: 3;
+    left: var(--gutter); right: var(--gutter); bottom: 5.5rem; margin: 0;
+  }
+  .cena__acao .btn { width: 100%; }
+
+  .cena[data-amplo="true"] {
+    position: fixed; inset: 0; z-index: 80;
+    height: 100svh; margin: 0; background-image: none;
+  }
+  .cena[data-amplo="true"] .cena__canvas { display: block; touch-action: none; }
+  .cena[data-amplo="true"] .cena__texto,
+  .cena[data-amplo="true"] .cena__veu,
+  .cena[data-amplo="true"] .cena__acao { display: none; }
+  /* Antes de abrir o 3D os chips nao comandam nada: o predio nem existe, e
+     eles so repetem os tipos que os cartoes logo abaixo ja listam. Ficam fora
+     da tela, junto com o botao de filtros, ate o 3D estar de pe. */
+  .tipos, .busca { display: none; }
+  body:has(.cena[data-amplo="true"]) .tipos,
+  body:has(.cena[data-amplo="true"]) .busca { display: flex; }
+  .cena[data-amplo="true"] .tipos { bottom: var(--space-4); }
+  /* Em tela cheia a cena vira fixed com z-index 80, e o painel vive noutra
+     secao: sem subir a camada ele fica atras do predio e some. Sobe tambem
+     acima da fileira de chips, que ocupa a base. */
+  body:has(.cena[data-amplo="true"]) .busca {
+    position: fixed; z-index: 81; bottom: 5.25rem;
+  }
+  .cena[data-amplo="true"] .cena__fechar {
+    display: grid; place-items: center;
+    position: absolute; z-index: 5; top: var(--space-4); right: var(--gutter);
+    width: 2.75rem; height: 2.75rem; padding: 0;
+    font: inherit; font-size: var(--step-1); line-height: 1;
+    color: var(--color-bg); background: rgba(13, 27, 34, 0.8);
+    border: 0; border-radius: var(--radius-pill); cursor: pointer;
+  }
+}
+
+/* Em tela cheia o corpo nao rola por tras do predio. */
+body:has(.cena[data-amplo="true"]) { overflow: hidden; }
+
+/* Tres tipos de quarto: tres colunas no desktop, nao quatro. */
+@media (min-width: 72em) { .rooms--tres { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+
+/* Mapa esquematico da localizacao: desenho em SVG com as cores dos tokens, no
+   lugar de um mapa externo, que traria recurso de terceiro para a pagina. */
+.mapa { margin: 0; border-radius: var(--radius-lg); overflow: hidden; background: var(--color-surface); }
+.mapa svg { width: 100%; height: auto; display: block; }
