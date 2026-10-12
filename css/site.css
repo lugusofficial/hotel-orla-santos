@@ -701,3 +701,93 @@ body:has(.cena[data-amplo="true"]) { overflow: hidden; }
    lugar de um mapa externo, que traria recurso de terceiro para a pagina. */
 .mapa { margin: 0; border-radius: var(--radius-lg); overflow: hidden; background: var(--color-surface); }
 .mapa svg { width: 100%; height: auto; display: block; }
+
+/* Atendente de demonstracao: balao fixo no canto, painel de conversa.
+   A unica sombra da pagina e a do painel, que flutua sobre qualquer secao. */
+.atendente {
+  position: fixed; right: var(--gutter); bottom: var(--space-4); z-index: 40;
+  display: grid; justify-items: end; gap: var(--space-3);
+}
+.atendente__abrir {
+  display: inline-flex; align-items: center; gap: var(--space-2);
+  min-height: 2.75rem; padding: 0 var(--space-4);
+  border: 0; border-radius: var(--radius-pill);
+  background: var(--color-text); color: var(--color-bg);
+  font: inherit; font-size: var(--step--1); cursor: pointer;
+  transition: background 180ms ease;
+}
+.atendente__abrir:hover { background: var(--color-accent); }
+.atendente__icone { width: 1.25rem; height: 1.25rem; flex: none; }
+.atendente[data-aberto="true"] .atendente__abrir { display: none; }
+.atendente__painel {
+  width: min(22rem, calc(100vw - 2 * var(--gutter)));
+  max-height: min(32rem, calc(100svh - 6rem));
+  display: grid; grid-template-rows: auto minmax(0, 1fr) auto auto auto;
+  background: var(--color-bg); border-radius: var(--radius-lg);
+  box-shadow: 0 12px 40px rgba(13, 27, 34, 0.22);
+  overflow: hidden;
+}
+.atendente__topo {
+  display: flex; justify-content: space-between; align-items: center; gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-text); color: var(--color-bg);
+}
+.atendente__titulo { margin: 0; font-family: var(--font-display); font-size: var(--step-0); }
+.atendente__fechar {
+  width: 2rem; height: 2rem; display: grid; place-items: center; padding: 0;
+  background: none; border: 0; color: inherit; cursor: pointer; border-radius: var(--radius-pill);
+}
+.atendente__fechar .icon { width: 1rem; height: 1rem; }
+.atendente__mensagens {
+  list-style: none; margin: 0; padding: var(--space-3) var(--space-4);
+  display: grid; gap: var(--space-2); overflow-y: auto; min-height: 8rem;
+}
+.atendente__mensagens li {
+  max-width: 90%; padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md); font-size: var(--step--1); line-height: 1.45;
+  background: var(--color-surface); justify-self: start;
+}
+.atendente__mensagens li[data-de="visitante"] {
+  background: var(--color-text); color: var(--color-bg); justify-self: end;
+}
+.atendente__mensagens ul { margin: var(--space-2) 0; padding-left: 1.1em; }
+.atendente__mensagens li li { max-width: none; padding: 0; background: none; font-size: inherit; }
+.atendente__mensagens a { color: inherit; }
+.atendente__chips {
+  list-style: none; margin: 0; padding: 0 var(--space-4) var(--space-2);
+  display: flex; flex-wrap: wrap; gap: var(--space-2);
+}
+.atendente__chips li { max-width: none; }
+.atendente__chips button, .atendente__chips a {
+  display: inline-flex; align-items: center;
+  font: inherit; font-size: var(--step--1); min-height: 2rem; padding: 0 var(--space-3);
+  border: 0; border-radius: var(--radius-pill);
+  background: var(--color-surface); color: var(--color-text); text-decoration: none; cursor: pointer;
+  transition: background 180ms ease;
+}
+.atendente__chips a { background: var(--color-accent); color: var(--color-on-accent); }
+.atendente__chips button:hover { background: var(--color-rule); }
+.atendente__form { display: flex; gap: var(--space-2); padding: var(--space-2) var(--space-4); }
+.atendente__form input {
+  flex: 1; min-width: 0; min-height: 2.75rem; padding: 0 var(--space-3);
+  font: inherit; font-size: var(--step--1);
+  border: 0; border-radius: var(--radius-pill);
+  background: var(--color-surface); color: var(--color-text);
+}
+.atendente__enviar {
+  min-height: 2.75rem; padding: 0 var(--space-4);
+  border: 0; border-radius: var(--radius-pill);
+  background: var(--color-accent); color: var(--color-on-accent);
+  font: inherit; font-size: var(--step--1); cursor: pointer;
+}
+.atendente__aviso { margin: 0; padding: 0 var(--space-4) var(--space-3); font-size: var(--step--1); color: var(--color-muted); }
+/* Na home o canto de baixo da cena ja tem o botao de filtros: o balao sobe. */
+@media (min-width: 56em) { main:has(.cena) .atendente { bottom: 5.25rem; } }
+/* Nas paginas de quarto a barra de preco ocupa o rodape da tela no celular. */
+@media (max-width: 63.99em) { body:has(.pricebar.is-shown) .atendente { bottom: 4.75rem; } }
+@media (max-width: 40em) {
+  .atendente { left: var(--gutter); }
+  .atendente__painel { width: 100%; max-height: calc(100svh - 5rem); }
+}
+/* Com a torre em tela cheia nao ha pagina por tras: o balao sai da frente. */
+body:has(.cena[data-amplo="true"]) .atendente { display: none; }
