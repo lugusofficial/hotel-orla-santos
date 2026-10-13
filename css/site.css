@@ -27,6 +27,22 @@
 }
 .cena__texto { padding-top: var(--altura-header, 0px); }
 .cena__video { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: cover; }
+/* Sem autoplay (economia de bateria do iPhone) o Safari desenha um botao de
+   play por cima do video. O botao some; o js/app.js troca o video pela
+   animacao em webp, que o iPhone anima mesmo nesse modo. */
+.cena__video::-webkit-media-controls,
+.cena__video::-webkit-media-controls-start-playback-button { display: none !important; -webkit-appearance: none; }
+/* Setinha no pe do heroi: avisa que a pagina continua abaixo do video. */
+.cena__seta {
+  position: absolute; left: 50%; bottom: var(--space-5); transform: translateX(-50%);
+  display: grid; place-items: center; width: 3rem; height: 3rem; border-radius: 50%;
+  color: var(--color-bg); background: rgba(13,27,34,0.45);
+}
+.cena__seta svg { width: 1.5rem; height: 1.5rem; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+@media (prefers-reduced-motion: no-preference) { .cena__seta svg { animation: seta 2.2s ease-in-out infinite; } }
+@keyframes seta { 0%, 100% { transform: translateY(-3px); } 50% { transform: translateY(4px); } }
+/* No celular o botao do atendente ocupa o canto de baixo; a seta vai para a esquerda, alinhada ao texto. */
+@media (max-width: 55.99em) { .cena__seta { left: var(--gutter); transform: none; } }
 .cena__veu {
   position: absolute; inset: 0; pointer-events: none;
   background: linear-gradient(100deg, rgba(13,27,34,0.88) 0%, rgba(13,27,34,0.62) 30%, rgba(13,27,34,0.12) 52%, rgba(13,27,34,0) 66%);
@@ -46,7 +62,8 @@
 
 @media (max-width: 55.99em) {
   /* No celular o texto fica em cima e o video aparece embaixo dele. */
-  .cena { height: clamp(32rem, 84svh, 44rem); }
+  /* Tela inteira: a cena sobe por tras do cabecalho, entao 100svh enche a tela. */
+  .cena { height: 100svh; min-height: 32rem; }
   .cena__texto {
     align-content: start;
     padding-top: calc(var(--altura-header, 0px) + var(--space-5));

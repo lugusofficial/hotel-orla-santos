@@ -177,7 +177,27 @@
     if (!raiz) { return; }
     var video = raiz.querySelector('[data-video-el]');
     if (!video) { return; }
-    var tocar = function () { var p = video.play(); if (p) { p.catch(function () {}); } };
+    var trocado = false;
+    // Economia de bateria do iPhone recusa o play() mesmo mudo. Nesse caso o
+    // video da lugar a mesma cena em webp animado, que o Safari anima sempre.
+    // Carregado so aqui, para quem toca o video nao baixar os dois.
+    var trocar = function () {
+      var src = video.getAttribute('data-fallback');
+      if (trocado || !src) { return; }
+      trocado = true;
+      var img = document.createElement('img');
+      img.className = video.className;
+      img.alt = '';
+      img.setAttribute('aria-hidden', 'true');
+      img.src = src;
+      video.pause();
+      video.replaceWith(img);
+    };
+    var tocar = function () {
+      if (trocado) { return; }
+      var p = video.play();
+      if (p) { p.catch(function (e) { if (e && e.name === 'NotAllowedError') { trocar(); } }); }
+    };
     tocar();
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (es) {
