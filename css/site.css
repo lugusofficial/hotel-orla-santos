@@ -15,7 +15,7 @@
 .crumbs a { text-decoration: none; }
 .crumbs a:hover { text-decoration: underline; }
 
-/* Cena do predio: ocupa a secao inteira e e a imagem principal do site */
+/* Heroi da home: o video da orla ocupa a secao inteira e e a imagem principal do site */
 .cena {
   position: relative;
   height: clamp(28rem, 82vh, 48rem);
@@ -26,7 +26,7 @@
   margin-top: calc(-1 * var(--altura-header, 0px));
 }
 .cena__texto { padding-top: var(--altura-header, 0px); }
-.cena__canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; touch-action: pan-y; user-select: none; }
+.cena__video { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: cover; }
 .cena__veu {
   position: absolute; inset: 0; pointer-events: none;
   background: linear-gradient(100deg, rgba(13,27,34,0.88) 0%, rgba(13,27,34,0.62) 30%, rgba(13,27,34,0.12) 52%, rgba(13,27,34,0) 66%);
@@ -34,127 +34,43 @@
 .cena__texto {
   position: absolute; inset: 0; display: grid; align-content: center;
   pointer-events: none; color: var(--color-bg);
-  /* Espaco reservado para a fileira de chips, que e posicionada por cima:
-     sem isso o texto centralizado encosta neles em tela baixa. */
-  padding-bottom: 6rem;
+  /* Espaco reservado para o botao de pausa, posicionado no canto de baixo. */
+  padding-bottom: var(--space-7);
 }
 .cena__texto .label { color: #e3c98a; }
 .cena__texto h1 { max-width: 13ch; color: var(--color-bg); }
 .cena__texto .lead { max-width: 34ch; color: var(--color-rule); }
 .cena__texto .container { max-width: 64rem; }
-.cena__aviso {
-  position: absolute; left: var(--gutter); bottom: var(--space-4);
-  max-width: 44ch; font-size: var(--step--1); color: var(--color-rule);
-}
-
-/* A ficha sai de dentro da janela escolhida */
-.cena .ficha {
-  position: absolute;
-  width: min(19rem, calc(100% - 2 * var(--gutter)));
-  z-index: 4;
-  transform: translate(-50%, -50%);
-  pointer-events: auto;
-}
-.cena .ficha::after {
-  content: ""; position: absolute; left: -10px; top: 50%;
-  width: 10px; height: 2px; background: var(--color-accent);
-}
-
-/* Seletor de tipo dentro da cena: e o controle do predio, nao uma lista de
-   quartos. A lista de quartos sao os cartoes mais abaixo. Fica visivel tambem
-   no modo quarto, para trocar de tipo sem voltar a visao geral. */
-.tipos {
-  position: absolute; z-index: 3;
-  left: 0; right: 0; bottom: var(--space-5);
-}
-.tipos ul {
-  width: min(100% - 2 * var(--gutter), 64rem);
-  margin-inline: auto;
-  display: flex; flex-wrap: wrap; gap: var(--space-2);
-  list-style: none; padding: 0;
-}
-.tipos li { max-width: none; }
-.tipos__chip {
-  display: flex; align-items: center;
+/* O botao de reserva volta a receber clique: o texto do heroi tem
+   pointer-events none para nao bloquear o que estiver atras dele. */
+.cena__texto .btn { pointer-events: auto; }
+/* Pausa: exigencia do criterio 2.2.2 da WCAG para movimento de mais de 5 s.
+   Pastilha escura no canto de baixo, longe do balao do atendente. */
+.cena__pausa {
+  position: absolute; z-index: 3; left: var(--gutter); bottom: var(--space-5);
   min-height: 2.75rem; padding: 0 var(--space-4);
-  border: 1px solid rgba(245, 240, 230, 0.3);
-  border-radius: 999px;
-  background: rgba(13, 27, 34, 0.45);
-  color: #f5f0e6;
-  font-size: var(--step--1);
-  letter-spacing: 0.04em;
-  text-decoration: none;
-  transition: border-color 220ms ease, color 220ms ease, background 220ms ease;
+  font: inherit; font-size: var(--step--1); letter-spacing: 0.04em;
+  color: var(--color-bg); background: rgba(13, 27, 34, 0.72);
+  border: 0; border-radius: var(--radius-pill); cursor: pointer;
+  transition: background 180ms ease;
 }
-.tipos__chip:hover, .tipos__chip:focus-visible {
-  border-color: #e3c98a; color: #e3c98a;
-}
-.tipos__chip.is-active {
-  border-color: #e3c98a; color: #0d1b22; background: #e3c98a;
-}
-
-/* Cartao que esta comandando o predio, quando os dois estao na tela */
-.rooms__item:has(.is-active) { border-color: var(--color-accent); }
-
-/* Estados da cena. O atributo data-modo e escrito por js/predio-init.js:
-   geral (predio inteiro) e quarto (andares separados). */
-.cena__texto, .cena__veu { transition: opacity 400ms ease; }
-.cena[data-modo="quarto"] .cena__texto { opacity: 0; }
-
-/* Acoes da ficha: trocar de andar e voltar ao predio */
-.ficha__acoes { margin: 0; display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-4); }
-.ficha__acoes .btn { font-size: var(--step--1); }
-.ficha__andares { display: grid; gap: var(--space-2); }
-.ficha__andares > div { display: flex; flex-wrap: wrap; gap: 0.25rem; }
-.ficha__rotulo {
-  font-size: var(--step--1); letter-spacing: 0.06em;
-  text-transform: uppercase; color: var(--color-muted);
-}
-.ficha__andares button {
-  /* 2rem de lado: acima do minimo de 24 px do criterio 2.5.8 da WCAG 2.2 */
-  width: 2rem; height: 2rem; padding: 0;
-  font: inherit; font-size: var(--step--1); line-height: 1;
-  color: var(--color-text); background: var(--color-surface);
-  border: 0; border-radius: var(--radius-pill);
-  cursor: pointer;
-  transition: color 180ms ease, background 180ms ease;
-}
-.ficha__andares button:hover { color: var(--color-accent); }
-.ficha__andares button[aria-current="true"] {
-  background: var(--color-accent); color: var(--color-bg);
-}
+.cena__pausa:hover { background: rgba(13, 27, 34, 0.9); }
 
 @media (max-width: 55.99em) {
-  /* A cena cresce: abaixo deste ponto o texto deixa de ser centralizado e
-     passa a dividir a altura com o titulo quebrado, o predio e os chips. */
+  /* No celular o texto fica em cima e o video aparece embaixo dele. */
   .cena { height: clamp(32rem, 84svh, 44rem); }
-  /* Encostada na base e ainda posicionada: o canvas e absoluto e pinta por cima
-     de qualquer filho fora de posicionamento, entao com position static a ficha
-     sumia atras dele. Em baixo ela tambem deixa o predio a vista. */
-  .cena .ficha {
-    position: absolute; inset: auto var(--gutter) var(--space-3);
-    width: auto; transform: none; margin: 0;
-    padding: var(--space-3); gap: var(--space-2);
-  }
-  .cena .ficha::after { display: none; }
-  .cena .ficha__tipo { font-size: var(--step-1); }
-  .cena .ficha__dados { gap: var(--space-2); }
-  /* Sem a altura do cabecalho o texto comeca atras dele: a cena sobe por tras
-     do cabecalho e o padding da base e o que reserva a fileira de chips. */
   .cena__texto {
     align-content: start;
     padding-top: calc(var(--altura-header, 0px) + var(--space-5));
-    padding-bottom: 7.5rem;
   }
   .cena__texto h1 { font-size: var(--step-3); max-width: 16ch; }
   .cena__texto .lead { max-width: 30ch; }
   /* O veu padrao escurece a esquerda, onde o texto fica no formato paisagem.
-     Aqui o texto fica em cima e o predio embaixo, entao o veu vira. */
+     Aqui o texto fica em cima, entao o veu vira. */
   .cena__veu {
-    background: linear-gradient(180deg, rgba(13,27,34,0.94) 0%, rgba(13,27,34,0.88) 46%,
-      rgba(13,27,34,0.24) 66%, rgba(13,27,34,0) 80%);
+    background: linear-gradient(180deg, rgba(13,27,34,0.9) 0%, rgba(13,27,34,0.72) 48%,
+      rgba(13,27,34,0.2) 72%, rgba(13,27,34,0) 88%);
   }
-  .tipos__chip { padding: 0 var(--space-3); }
 }
 
 /* Listagem de quartos: cartao delimitado de verdade, com superficie propria,
@@ -286,7 +202,6 @@
 .gal:not(.is-live) .gal__controls { display: none; }
 .gal:not(.is-live) .gal__track { flex-direction: column; gap: var(--space-4); }
 
-/* Maquete 3D */
 /* Tour 360: palco do panorama e a descricao em texto ao lado */
 .tour { display: grid; gap: var(--space-6); align-items: start; }
 .tour__palco { position: relative; display: grid; gap: var(--space-4); }
@@ -448,41 +363,6 @@ main { --section-gap: clamp(3rem, 5vw, 5rem); }
 .rooms__link img { aspect-ratio: 4 / 3; }
 .shot img { aspect-ratio: 3 / 2; }
 
-/* Ficha do quarto selecionado no predio */
-.ficha {
-  background: var(--color-bg);
-  border: 1px solid var(--color-rule);
-  border-radius: var(--radius-md);
-  padding: var(--space-4);
-  display: grid;
-  gap: var(--space-3);
-}
-.ficha__num { margin: 0; font-size: var(--step--1); letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-muted); }
-.ficha__tipo { margin: 0; font-family: var(--font-display); font-size: var(--step-2); }
-.ficha__dados { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); margin: 0; }
-.ficha__dados div { display: grid; gap: 2px; }
-.ficha__dados dt { font-size: var(--step--1); color: var(--color-muted); }
-.ficha__dados dd { margin: 0; font-family: var(--font-display); }
-.ficha__estado { margin: 0; font-size: var(--step--1); font-weight: var(--weight-body-medium); }
-.ficha__estado[data-disp="false"] { color: var(--color-muted); }
-
-/* Tooltip da janela */
-.tip {
-  position: absolute;
-  transform: translate(-50%, calc(-100% - 14px));
-  background: var(--color-text);
-  color: var(--color-bg);
-  border-radius: var(--radius-sm);
-  padding: var(--space-2) var(--space-3);
-  display: grid;
-  gap: 2px;
-  font-size: var(--step--1);
-  pointer-events: none;
-  white-space: nowrap;
-  z-index: 5;
-}
-.hero__aviso { font-size: var(--step--1); color: var(--color-muted); max-width: 46ch; }
-
 /* Rodape grudado no fim da tela.
    Em paginas curtas, como contato, o conteudo acabava antes do fim da janela e
    o rodape parava no meio, com o fundo do corpo aparecendo embaixo dele. */
@@ -569,130 +449,16 @@ body > main > .section:only-child { margin-block: auto; }
   .site-nav ul { flex-direction: column; gap: var(--space-3); margin-bottom: var(--space-4); }
 }
 
-/* Painel de hora e filtros, dentro da cena. Fica recolhido atras de um botao
-   porque a cena e a imagem principal do site e nao pode comecar coberta de
-   formulario; quem quiser procurar, abre. Sem JavaScript ele nem aparece: os
-   controles so fazem sentido com o predio de pe. */
-/* A secao do painel nao ocupa altura: serve so de ancora para ele flutuar
-   sobre o canto de baixo da cena, que termina na linha de cima desta secao.
-   Assim o texto dos controles fica fora do orcamento de palavras do heroi,
-   onde seria contado como prosa. */
-.busca-secao { position: relative; height: 0; }
-.busca {
-  position: absolute; z-index: 4;
-  right: var(--gutter); bottom: var(--space-5);
-  display: flex; flex-direction: column-reverse; align-items: flex-end;
-  gap: var(--space-2);
-  max-width: min(22rem, calc(100% - 2 * var(--gutter)));
-}
-.busca__abrir {
-  min-height: 2.75rem; padding: 0 var(--space-4);
-  font: inherit; font-size: var(--step--1); letter-spacing: 0.04em;
-  color: var(--color-bg); background: rgba(13, 27, 34, 0.78);
-  border: 0; border-radius: var(--radius-pill);
-  cursor: pointer;
-}
-.busca__abrir:hover { color: #e3c98a; }
-.busca__campos {
-  width: min(20rem, 80vw);
-  display: grid; gap: var(--space-3);
-  padding: var(--space-4);
-  background: rgba(13, 27, 34, 0.82);
-  border-radius: var(--radius-md);
-  color: var(--color-bg);
-  max-height: min(26rem, 52svh); overflow-y: auto;
-  /* Folga extra embaixo: a contagem e o ultimo elemento e, com a caixa
-     rolando, ela encostava na borda. */
-  padding-bottom: var(--space-5);
-}
-.busca__linha { margin: 0; display: grid; gap: var(--space-1); font-size: var(--step--1); }
-.busca__linha label { color: var(--color-rule); letter-spacing: 0.04em; }
-.busca__linha--caixa { grid-template-columns: auto 1fr; align-items: center; gap: var(--space-3); }
-.busca__linha input[type="range"] { width: 100%; accent-color: #e3c98a; min-height: 1.75rem; }
-.busca__linha input[type="checkbox"] { width: 1.25rem; height: 1.25rem; accent-color: #e3c98a; }
-.busca__linha select {
-  font: inherit; font-size: var(--step--1); min-height: 2.25rem;
-  padding: 0 var(--space-2); color: var(--color-text);
-  background: var(--color-bg); border: 0; border-radius: var(--radius-sm);
-}
-.busca__linha output { font-family: var(--font-display); font-size: var(--step-0); }
-.busca__conta {
-  margin: var(--space-1) 0 0; text-align: center;
-  font-size: var(--step--1); color: #e3c98a; min-height: 1.4em;
-}
-@media (max-width: 55.99em) {
-  .busca { right: var(--gutter); left: var(--gutter); align-items: flex-start; max-width: none; }
-  .busca__campos { width: 100%; }
-}
-
 /* Tela baixa, largura de desktop: a 600 px de altura o texto do heroi nao cabe
-   centralizado e encavala no cabecalho. Mesma saida do celular: ancora no topo
-   e reserva a faixa dos chips embaixo. */
+   centralizado e encavala no cabecalho. Mesma saida do celular: ancora no topo. */
 @media (min-width: 56em) and (max-height: 44em) {
   .cena { height: clamp(28rem, 92svh, 48rem); }
   .cena__texto {
     align-content: start;
     padding-top: calc(var(--altura-header, 0px) + var(--space-4));
-    padding-bottom: 6.5rem;
   }
   .cena__texto h1 { font-size: var(--step-3); }
 }
-
-/* O predio 3D no celular.
-   No computador ele carrega junto com a pagina e o mouse gira sem conflito.
-   No celular nao dava: o canvas ocupa quase a tela inteira e qualquer gesto
-   dentro dele ou rola a pagina ou gira o predio, nunca os dois, e eu tinha
-   desligado o toque do OrbitControls para nao sequestrar a rolagem, o que na
-   pratica deixou o predio parado. Alem disso a biblioteca pesa mais de um
-   mega, que no celular e o grosso da pagina.
-   Entao no celular o heroi mostra uma foto do predio e um botao; quem toca
-   abre o 3D em tela cheia, onde o gesto e so dele e a rolagem nao existe. */
-.cena__acao { display: none; }
-.cena__fechar { display: none; }
-
-@media (max-width: 55.99em) {
-  .cena { background-image: url("../assets/predio-capa.jpg"); background-size: cover;
-          background-position: center 42%; }
-  .cena__canvas { display: none; }
-  .cena__acao {
-    display: block; position: absolute; z-index: 3;
-    left: var(--gutter); right: var(--gutter); bottom: 5.5rem; margin: 0;
-  }
-  .cena__acao .btn { width: 100%; }
-
-  .cena[data-amplo="true"] {
-    position: fixed; inset: 0; z-index: 80;
-    height: 100svh; margin: 0; background-image: none;
-  }
-  .cena[data-amplo="true"] .cena__canvas { display: block; touch-action: none; }
-  .cena[data-amplo="true"] .cena__texto,
-  .cena[data-amplo="true"] .cena__veu,
-  .cena[data-amplo="true"] .cena__acao { display: none; }
-  /* Antes de abrir o 3D os chips nao comandam nada: o predio nem existe, e
-     eles so repetem os tipos que os cartoes logo abaixo ja listam. Ficam fora
-     da tela, junto com o botao de filtros, ate o 3D estar de pe. */
-  .tipos, .busca { display: none; }
-  body:has(.cena[data-amplo="true"]) .tipos,
-  body:has(.cena[data-amplo="true"]) .busca { display: flex; }
-  .cena[data-amplo="true"] .tipos { bottom: var(--space-4); }
-  /* Em tela cheia a cena vira fixed com z-index 80, e o painel vive noutra
-     secao: sem subir a camada ele fica atras do predio e some. Sobe tambem
-     acima da fileira de chips, que ocupa a base. */
-  body:has(.cena[data-amplo="true"]) .busca {
-    position: fixed; z-index: 81; bottom: 5.25rem;
-  }
-  .cena[data-amplo="true"] .cena__fechar {
-    display: grid; place-items: center;
-    position: absolute; z-index: 5; top: var(--space-4); right: var(--gutter);
-    width: 2.75rem; height: 2.75rem; padding: 0;
-    font: inherit; font-size: var(--step-1); line-height: 1;
-    color: var(--color-bg); background: rgba(13, 27, 34, 0.8);
-    border: 0; border-radius: var(--radius-pill); cursor: pointer;
-  }
-}
-
-/* Em tela cheia o corpo nao rola por tras do predio. */
-body:has(.cena[data-amplo="true"]) { overflow: hidden; }
 
 /* Tres tipos de quarto: tres colunas no desktop, nao quatro. */
 @media (min-width: 72em) { .rooms--tres { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
@@ -781,13 +547,9 @@ body:has(.cena[data-amplo="true"]) { overflow: hidden; }
   font: inherit; font-size: var(--step--1); cursor: pointer;
 }
 .atendente__aviso { margin: 0; padding: 0 var(--space-4) var(--space-3); font-size: var(--step--1); color: var(--color-muted); }
-/* Na home o canto de baixo da cena ja tem o botao de filtros: o balao sobe. */
-@media (min-width: 56em) { main:has(.cena) .atendente { bottom: 5.25rem; } }
 /* Nas paginas de quarto a barra de preco ocupa o rodape da tela no celular. */
 @media (max-width: 63.99em) { body:has(.pricebar.is-shown) .atendente { bottom: 4.75rem; } }
 @media (max-width: 40em) {
   .atendente { left: var(--gutter); }
   .atendente__painel { width: 100%; max-height: calc(100svh - 5rem); }
 }
-/* Com a torre em tela cheia nao ha pagina por tras: o balao sai da frente. */
-body:has(.cena[data-amplo="true"]) .atendente { display: none; }

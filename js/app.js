@@ -167,7 +167,50 @@
     }
   }
 
+  /* Video do heroi. Toca mudo e em loop, mas so quando faz sentido: com
+     movimento reduzido ou economia de dados fica no poster e o botao vira
+     "Ver o video". O botao de pausa existe por causa do criterio 2.2.2 da
+     WCAG, que pede um jeito de parar qualquer movimento de mais de 5 s. */
+  function heroVideo() {
+    var raiz = document.querySelector('[data-video]');
+    if (!raiz) { return; }
+    var video = raiz.querySelector('[data-video-el]');
+    var botao = raiz.querySelector('[data-video-pausa]');
+    if (!video || !botao) { return; }
+    var economia = navigator.connection && navigator.connection.saveData;
+    var rotulo = function () {
+      botao.textContent = video.paused ? fr('videoContinuar', 'Continuar o v\u00eddeo') : fr('videoPausar', 'Pausar o v\u00eddeo');
+    };
+    // parado: o visitante pediu para parar (ou nunca pediu para tocar, no
+    // caso de movimento reduzido). So o botao muda isso; sair e voltar da
+    // tela nao.
+    var parado = !!(reduced || economia);
+    video.addEventListener('play', rotulo);
+    video.addEventListener('pause', rotulo);
+    botao.addEventListener('click', function () {
+      parado = !video.paused;
+      if (parado) { video.pause(); } else { video.play().catch(rotulo); }
+    });
+    botao.hidden = false;
+    if (parado) {
+      botao.textContent = fr('videoVer', 'Ver o v\u00eddeo');
+      return;
+    }
+    video.play().then(rotulo).catch(rotulo);
+    // Fora da tela o video para: nao gasta bateria nem banda enquanto
+    // ninguem esta olhando, e retoma quando volta, a menos que tenham parado.
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(function (es) {
+        es.forEach(function (en) {
+          if (!en.isIntersecting) { if (!video.paused) { video.pause(); } }
+          else if (video.paused && !parado) { video.play().catch(rotulo); }
+        });
+      }, { threshold: 0.2 }).observe(raiz);
+    }
+  }
+
   reveal();
+  heroVideo();
   gallery();
   priceBar();
   headerSobreCena();
