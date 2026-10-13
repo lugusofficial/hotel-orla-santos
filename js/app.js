@@ -167,43 +167,23 @@
     }
   }
 
-  /* Video do heroi. Toca mudo e em loop, mas so quando faz sentido: com
-     movimento reduzido ou economia de dados fica no poster e o botao vira
-     "Ver o video". O botao de pausa existe por causa do criterio 2.2.2 da
-     WCAG, que pede um jeito de parar qualquer movimento de mais de 5 s. */
+  /* Video do heroi. Toca mudo e em loop sempre, sem botao, a pedido do
+     cliente (13/10): o video e a vitrine do hotel. O script so pausa quando
+     o heroi sai da tela, para nao gastar bateria nem banda, e retoma quando
+     volta. Se o navegador recusar o autoplay (economia de bateria do iOS),
+     fica o poster. */
   function heroVideo() {
     var raiz = document.querySelector('[data-video]');
     if (!raiz) { return; }
     var video = raiz.querySelector('[data-video-el]');
-    var botao = raiz.querySelector('[data-video-pausa]');
-    if (!video || !botao) { return; }
-    var economia = navigator.connection && navigator.connection.saveData;
-    var rotulo = function () {
-      botao.textContent = video.paused ? fr('videoContinuar', 'Continuar o v\u00eddeo') : fr('videoPausar', 'Pausar o v\u00eddeo');
-    };
-    // parado: o visitante pediu para parar (ou nunca pediu para tocar, no
-    // caso de movimento reduzido). So o botao muda isso; sair e voltar da
-    // tela nao.
-    var parado = !!(reduced || economia);
-    video.addEventListener('play', rotulo);
-    video.addEventListener('pause', rotulo);
-    botao.addEventListener('click', function () {
-      parado = !video.paused;
-      if (parado) { video.pause(); } else { video.play().catch(rotulo); }
-    });
-    botao.hidden = false;
-    if (parado) {
-      botao.textContent = fr('videoVer', 'Ver o v\u00eddeo');
-      return;
-    }
-    video.play().then(rotulo).catch(rotulo);
-    // Fora da tela o video para: nao gasta bateria nem banda enquanto
-    // ninguem esta olhando, e retoma quando volta, a menos que tenham parado.
+    if (!video) { return; }
+    var tocar = function () { var p = video.play(); if (p) { p.catch(function () {}); } };
+    tocar();
     if ('IntersectionObserver' in window) {
       new IntersectionObserver(function (es) {
         es.forEach(function (en) {
           if (!en.isIntersecting) { if (!video.paused) { video.pause(); } }
-          else if (video.paused && !parado) { video.play().catch(rotulo); }
+          else if (video.paused) { tocar(); }
         });
       }, { threshold: 0.2 }).observe(raiz);
     }

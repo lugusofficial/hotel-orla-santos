@@ -34,27 +34,15 @@
 .cena__texto {
   position: absolute; inset: 0; display: grid; align-content: center;
   pointer-events: none; color: var(--color-bg);
-  /* Espaco reservado para o botao de pausa, posicionado no canto de baixo. */
   padding-bottom: var(--space-7);
 }
-.cena__texto .label { color: #e3c98a; }
+.cena__texto .label { color: #9FDCD6; }
 .cena__texto h1 { max-width: 13ch; color: var(--color-bg); }
 .cena__texto .lead { max-width: 34ch; color: var(--color-rule); }
 .cena__texto .container { max-width: 64rem; }
 /* O botao de reserva volta a receber clique: o texto do heroi tem
    pointer-events none para nao bloquear o que estiver atras dele. */
 .cena__texto .btn { pointer-events: auto; }
-/* Pausa: exigencia do criterio 2.2.2 da WCAG para movimento de mais de 5 s.
-   Pastilha escura no canto de baixo, longe do balao do atendente. */
-.cena__pausa {
-  position: absolute; z-index: 3; left: var(--gutter); bottom: var(--space-5);
-  min-height: 2.75rem; padding: 0 var(--space-4);
-  font: inherit; font-size: var(--step--1); letter-spacing: 0.04em;
-  color: var(--color-bg); background: rgba(13, 27, 34, 0.72);
-  border: 0; border-radius: var(--radius-pill); cursor: pointer;
-  transition: background 180ms ease;
-}
-.cena__pausa:hover { background: rgba(13, 27, 34, 0.9); }
 
 @media (max-width: 55.99em) {
   /* No celular o texto fica em cima e o video aparece embaixo dele. */
